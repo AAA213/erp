@@ -27,5 +27,12 @@ interface userListObj {
   status: number;
   username: string;
 }
-
-export type { promiseRes, loginInfoRes, loginRes, userListObj };
+interface userList {
+  list: userListObj[];
+  pageNum: number;
+  pageSize: number;
+  total: number;
+  totalPage: number;
+}
+type userListRes = promiseRes<userList>;
+export type { promiseRes, loginInfoRes, loginRes, userListRes, userListObj };

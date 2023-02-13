@@ -7,8 +7,8 @@ import {
 import { getToken } from "@/utils/token";
 import { useStore } from "@/stores/counter";
 // 不支持 () => import('./dir/foo.js'), 这种导入方式 （有时会报错）
-// Vite官方文档说需要使用Glob 导入形式，然后看了一个Glob的文档，解决了这个问题。
-const modules = import.meta.glob("../views/**/*/*.vue");
+// Vite官方文档说需要使用Glob 导入形式，然后看了一个Glob的文档，解决了这个问题。不能使用@
+const modules = import.meta.glob("../views/**/**/*.vue");
 
 const routes: RouteRecordRaw[] = [
   {
@@ -25,19 +25,6 @@ const routes: RouteRecordRaw[] = [
     name: "home",
     component: modules["../views/home/HomeView.vue"],
   },
-  // ----------------------------------
-  {
-    path: "/usm",
-    name: "usm",
-    component: modules["../views/home/HomeView.vue"],
-    children: [
-      {
-        path: "adminView",
-        name: "adminView",
-        component: modules["../views/usm/admin/adminView.vue"],
-      },
-    ],
-  },
 ];
 
 const router = createRouter({
@@ -53,26 +40,26 @@ router.beforeEach(async (to, from, next) => {
     // 没有token的情况 跳转到登录页面
     next("/login");
   }
-  if (getToken() && to.path === "/login" && from.path !== "/") {
-    // 有token,还要跳转到登录页,重定向到原本页面 (排除刚打开网页的情况)
-    console.log(2);
-    next(from);
-  }
-  // token 存在  && menu 为空 说明刷新
-  if (getToken() && store.menus.length === 0) {
-    await store.getAdminUserInfo();
-    // 生成路由配置
-    addRouter();
-    // 因为这里是异步，所以不能直接 next()，此时 router.addRoute 添加的路由还没有添加进去
-    // 重定向，再次进入前置路由守卫，第二次进入路由守卫时 动态添加的路由就添加完成了
-    next(to.path);
-  }
-
-  if (getToken() && from.path === "/login" && to.path === "/homePage") {
-    // 首次登录成功的情况
-    // 登录进入首页时，因为有 token,store.menus 所以不会进入上面的分支，动态加载路由
-    addRouter();
-    next("/index");
+  if (getToken()) {
+    // if (to.path === "/login" && from.path !== "/login") {
+    //   // 有token,还要跳转到登录页,重定向到原本页面 (排除刚打开网页的情况)
+    //   next(from);
+    // }
+    if (store.menus.length === 0) {
+      // token 存在  && menu 为空 说明刷新
+      await store.getAdminUserInfo();
+      // 生成路由配置
+      addRouter();
+      // 因为这里是异步，所以不能直接 next()，此时 router.addRoute 添加的路由还没有添加进去
+      // 重定向，再次进入前置路由守卫，第二次进入路由守卫时 动态添加的路由就添加完成了
+      next(to.path);
+    }
+    if (from.path === "/login" && to.path === "/homePage") {
+      // 首次登录成功的情况
+      // 登录进入首页时，因为有 token,store.menus 所以不会进入上面的分支，动态加载路由
+      addRouter();
+      next("/index");
+    }
   }
 
   next();
@@ -101,7 +88,7 @@ function addRouter() {
         name: `${childrenItem.name}`,
         component:
           modules[
-            "@/views/" +
+            "../views/" +
               item.name +
               "/" +
               childrenItem.name +
@@ -129,7 +116,6 @@ function addRouter() {
     ],
   });
 }
-
 // 挂载路由的方法，为了模块化，使得 关于 router 的全在这个文件
 export const initRouter = (app: App<Element>) => {
   app.use(router);

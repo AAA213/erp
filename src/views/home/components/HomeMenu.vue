@@ -45,7 +45,6 @@ const onOpenChange = (openKeys: number[]) => {
   state.openKeys = [openKeys.pop() as number];
 };
 const store = useStore();
-console.log(store.menus);
 
 // 防止出现 store.menu 有值但  const newMenu 没有值的情况
 // 当异步请求到了之后，会重新获取 newMenu 的值
@@ -54,9 +53,7 @@ const newMenu = computed(() => {
 });
 let router = useRouter();
 const handleClick: MenuProps["onClick"] = (menuInfo) => {
-  // console.log("click ", menuInfo.key, menuInfo.item, menuInfo.keyPath);
-  // router.push(menuInfo.key as RouteLocationNamedRaw);
-  router.push("/usm/adminView");
+  router.push(menuInfo.key as RouteLocationNamedRaw);
 };
 </script>
 <style less></style>

@@ -1,15 +1,11 @@
 import axios from "@/plugins/axios";
-import type {
-  promiseRes,
-  loginInfoRes,
-  loginRes,
-  userListObj,
-} from "@/types/apiTypes";
+import type { userListRes } from "@/types/apiTypes";
+
 /**
  * 获取用户列表
 
  */
-const getUserList = (data = {}): promiseRes<userListObj[]> => {
-  return axios.get("/admin/list", data);
+const getUserList = (params = { pageNum: 1, pageSize: 10 }): userListRes => {
+  return axios.get("/admin/list", { params });
 };
 export { getUserList };

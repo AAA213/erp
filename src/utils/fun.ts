@@ -1,3 +1,5 @@
+//引入moment：
+import moment from "moment";
 /**
  *
  * @param arr 数组
@@ -18,6 +20,10 @@ const arr2Tree = (arr: any[], pid: any = null, pidKey = "parentId") => {
   }, []);
 };
 
+const filterTime = (time: Date) => {
+  return moment(time).format("YYYY-MM-DD HH:mm:ss");
+};
+
 // const tree = arrToTree(arrs); // 需要定义arrs
 // console.log(tree);
-export { arr2Tree };
+export { arr2Tree, filterTime };

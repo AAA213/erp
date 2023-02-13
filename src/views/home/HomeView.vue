@@ -37,7 +37,7 @@ import HomeMenu from "./components/HomeMenu.vue";
     left: 250px;
     right: 0;
     bottom: 0;
-    background-color: #a387ff;
+    padding: 18px;
   }
 }
 </style>

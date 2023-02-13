@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from "node:url";
-
+import legacy from "@vitejs/plugin-legacy";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
@@ -14,17 +14,11 @@ export default defineConfig({
     Components({
       resolvers: [AntDesignVueResolver()],
     }),
+    // 为传统浏览器提供支持 类似babel
+    legacy({
+      targets: ["defaults", "not IE 11"],
+    }),
   ],
-  server: {
-    port: 3000,
-    proxy: {
-      "/admin": {
-        target: "http://120.24.64.5:8088/mall-admin/",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""), // 不可以省略rewrite
-      },
-    },
-  },
 
   resolve: {
     alias: {
