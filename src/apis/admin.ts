@@ -8,4 +8,26 @@ import type { userListRes } from "@/types/apiTypes";
 const getUserList = (params = { pageNum: 1, pageSize: 10 }): userListRes => {
   return axios.get("/admin/list", { params });
 };
-export { getUserList };
+
+/**
+ * 跟新用户状态
+ */
+const upDateUserStatus = (params: { id: number; status: number }) => {
+  return axios.post(`/admin/updateStatus/${params.id}`, null, { params });
+};
+
+/**
+ * 注册用户
+ */
+const addUser = (data: {
+  email: "string";
+  icon: "string";
+  nickName: "string";
+  note: "string";
+  password: "string";
+  username: "string";
+}) => {
+  return axios.post(`admin/register`, data);
+};
+
+export { getUserList, upDateUserStatus };

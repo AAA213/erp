@@ -1,7 +1,7 @@
 import { filterTime } from "@/utils/fun";
 const tableFields = [
   {
-    name: "id",
+    title: "id",
     dataIndex: "id",
     key: "id",
     width: 70,
