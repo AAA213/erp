@@ -1,17 +1,18 @@
 <template>
   <div class="home">
     <div class="home_header">
-      <HomeHeader />
+      <LayoutHeader />
     </div>
-    <div class="home_menu"><HomeMenu /></div>
+    <div class="home_menu"><LayoutMenu /></div>
     <div class="home_content">
-      <router-view></router-view>
+      <LayoutContent />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import HomeHeader from "./components/HomeHeader.vue";
-import HomeMenu from "./components/HomeMenu.vue";
+import LayoutHeader from "./components/LayoutHeader.vue";
+import LayoutMenu from "./components/LayoutMenu.vue";
+import LayoutContent from "./components/LayoutContent.vue";
 </script>
 <style lang="less" scoped>
 .home {

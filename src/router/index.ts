@@ -6,9 +6,13 @@ import {
 } from "vue-router";
 import { getToken } from "@/utils/token";
 import { useStore } from "@/stores/counter";
+
 // 不支持 () => import('./dir/foo.js'), 这种导入方式 （有时会报错）
 // Vite官方文档说需要使用Glob 导入形式，然后看了一个Glob的文档，解决了这个问题。不能使用@
-const modules = import.meta.glob("../views/**/**/*.vue");
+const modules = import.meta.glob([
+  "../views/**/**/*.vue",
+  "../components/**/*.vue",
+]);
 
 const routes: RouteRecordRaw[] = [
   {
@@ -77,7 +81,7 @@ function addRouter() {
     const routerItem: RouteRecordRaw = {
       path: `/${item.name}`,
       name: `${item.name}`,
-      component: modules["../views/home/HomeView.vue"],
+      component: modules["../components/TheLayout/TheLayout.vue"],
       redirect: `/${item.name}/${item.children[0].name}`,
       children: [],
     };
@@ -105,7 +109,7 @@ function addRouter() {
   router.addRoute({
     path: "/",
     name: "homeView",
-    component: modules["../views/home/HomeView.vue"],
+    component: modules["../components/TheLayout/TheLayout.vue"],
     redirect: "/index",
     children: [
       {
